@@ -33,12 +33,18 @@
                 <tbody>
                     <?php
                     include('connection.php');
-                    $count = 1;
-                    $records_per_page = 3; // Number of records to display per page
-                    $page = isset($_GET['page']) ? $_GET['page'] : 1; // Get the current page number
-                    $offset = ($page - 1) * $records_per_page; // Calculate the offset based on the current page
 
-                    $query = mysqli_query($conn, "SELECT id, name, is_active, created_on, created_by, modify_on, modify_by FROM categories WHERE is_active = 1 ORDER BY id DESC LIMIT $offset, $records_per_page");
+                    if(!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true){
+                        header('location: login-form.php');
+                        exit;
+                    }
+
+                    $count = 1;
+                    $page = isset($_GET['page']) ? $_GET['page'] : 1;
+                    $recordsPerPage = 3;
+                    $offset = ($page - 1) * $recordsPerPage;
+
+                    $query = mysqli_query($conn, "SELECT id, name, is_active, created_on, created_by, modify_on, modify_by FROM categories WHERE is_active = 1 ORDER BY id DESC LIMIT $offset, $recordsPerPage");
                     $total_records = mysqli_num_rows(mysqli_query($conn, "SELECT * FROM categories WHERE is_active = 1"));
 
                     if (mysqli_num_rows($query) > 0) {
@@ -74,7 +80,7 @@
         <nav aria-label="Page navigation">
             <ul class="pagination justify-content-center">
                 <?php
-                $total_pages = ceil($total_records / $records_per_page);
+                $total_pages = ceil($total_records / $recordsPerPage);
 
                 // Previous button
                 if ($page > 1) {
