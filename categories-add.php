@@ -1,10 +1,14 @@
 <?php
 	include('connection.php');
 
+	if(!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true){
+		header('location: login-form.php');
+		exit;
+	}
 	if(isset($_POST['submit'])) {
 
 		$categoriesName = $_POST['categories-name'];
-		$query = mysqli_query($conn,"INSERT INTO categories(name) VALUE ('$categoriesName')");
+		$query = mysqli_query($conn,"INSERT INTO categories (name) VALUE ('$categoriesName')");
 
 		if($query){
 			echo "<script>alert('You have successfully inserted the data');</script>";

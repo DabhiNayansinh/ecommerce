@@ -2,6 +2,12 @@
 <html lang="en">
 	<?php
         include('connection.php');
+
+		if(!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true){
+			header('location: login-form.php');
+			exit;
+		}
+
         $editId=$_GET['editId'];
         $query = mysqli_query($conn,"select name from categories where id = $editId ");
             while ($row=mysqli_fetch_array($query)) {

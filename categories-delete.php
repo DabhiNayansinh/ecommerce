@@ -1,6 +1,11 @@
 <?php
     include('connection.php');
     
+    if(!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true){
+        header('location: login-form.php');
+        exit;
+    }
+
     if(isset($_GET['delId'])){
 
         $delId = $_GET['delId'];

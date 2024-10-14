@@ -1,13 +1,9 @@
 <?php
-
-// Logout
-if (isset($_POST['logout'])) {
-    session_unset();
+    // Logout
+    include('connection.php');
+    $_SESSION = [];
     session_destroy();
     echo "Logout successful!";
-    // Redirect to the login page or home page
-    header('Location: login.php');
+    header('Location: login-form.php');
     exit();
-}
-
 ?>

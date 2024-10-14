@@ -1,6 +1,11 @@
 <?php
     include('connection.php');
 
+    if(!isset($_SESSION['logggedin']) || $_SESSION['loggedin'] !== true){
+        header('location: login-form.php');
+        exit;
+    }
+
     if(isset($_POST['submit'])){
 
         $editId=$_POST['editId'];

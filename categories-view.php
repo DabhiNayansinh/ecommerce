@@ -2,6 +2,11 @@
 <html lang="en">
     <?php
     	include('connection.php');
+
+		if(!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true){
+			header('location: login-form');
+		}
+
         $viewId=$_GET['viewId'];
         $query = mysqli_query($conn,"select id,name,is_active,created_on,created_by,modify_on,modify_by from categories where id = $viewId ");
             while ($row=mysqli_fetch_array($query)) {
