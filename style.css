@@ -1,0 +1,10 @@
+body.dark-mode {
+    background-color: #121212;
+    color: #ffffff;
+}
+.dark-mode .navbar {
+    background-color: #1e1e1e !important;
+}
+.dark-mode .sidebar {
+    background-color: #242424 !important;
+}
