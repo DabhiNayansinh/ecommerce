@@ -1,6 +1,6 @@
 <?php
     // Logout
-    include('connection.php');
+include $_SERVER['DOCUMENT_ROOT'] . '/ecommerce/ecommerce/connection.php';
     $_SESSION = [];
     session_destroy();
     echo "Logout successful!";

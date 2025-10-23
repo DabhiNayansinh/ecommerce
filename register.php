@@ -1,10 +1,12 @@
 <?php 
-    include('connection.php');
     echo $_POST['submit'];
+    include $_SERVER['DOCUMENT_ROOT'] . '/ecommerce/ecommerce/connection.php';
+
 if (isset($_POST['submit'])) {
     $username = mysqli_real_escape_string($conn, $_POST['username']);
     $email = mysqli_real_escape_string($conn, $_POST['email']);
-    $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+    // $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+    $password = $_POST['password'];
     $phoneNumber = $_POST['phone_number'];
     $mobileNumber = $_POST['mobile_number'];
     // $image = $_POST['image'];
@@ -48,7 +50,7 @@ if (isset($_POST['submit'])) {
 
     if($query){
         echo "Registration successful!";
-        header('Location: login.html');
+        header('Location: login-form.php');
         // echo "<script>alert('You have successfully inserted the data');</script>";
         // echo "<script type='text/javascript'> document.location ='categories-listing.php'; </script>";
     } else {

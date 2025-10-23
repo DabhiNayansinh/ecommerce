@@ -6,41 +6,49 @@
 	// 	exit;
 	// }
 	if(isset($_POST['submit'])) {
-		$name = $_POST['name'];
-		$brand = $_POST['brand'];
-		$description = $_POST['description'];
-		$price = $_POST['price'];
-		$discount = $_POST['discount'];
-		$size = $_POST['size'];
-		$colors = $_POST['colors'];
-		$stock_quantity = $_POST['stock_quantity'];
-		$category_id = $_POST['category_id'];
+		$name = trim($_POST['name']);
+		$brand = trim($_POST['brand']);
+		$description = trim($_POST['description']);
+		$size = trim($_POST['size']);
+		$colors = trim($_POST['colors']);
+		$category_id = intval($_POST['category_id']);
+		$price = is_numeric($_POST['price']) ? $_POST['price'] : 0;
+		$discount = is_numeric($_POST['discount']) ? $_POST['discount'] : 0;
+		$stock_quantity = is_numeric($_POST['stock_quantity']) ? $_POST['stock_quantity'] : 0;
 
 
-    if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
-        // Define the target directory for uploads
-        $targetDir = $_SERVER['DOCUMENT_ROOT'] . "/ecommerce/ecommerce/uploads/";
-        // Define allowed extensions for each file type (you can modify this list as needed)
-        $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif', 'pdf', 'docx', 'txt']; // Example extensions
-        // Call the uploadFile function to upload the document (image, pdf, etc.)
-        $uploadedFile = uploadFile($_FILES['image'], $targetDir, $allowedExtensions);
-        // If a file was uploaded, $uploadedFile will contain the file name
-        // If no file is uploaded, $uploadedFile will be null
-        $image_name = $uploadedFile;
-    } else {
-        $image_name = null;
+
+    // Image upload handling
+    $target_dir = $_SERVER['DOCUMENT_ROOT'] . "/ecommerce/ecommerce/uploads/";
+    $image_name = basename($_FILES["image"]["name"]);
+    $target_file = $target_dir . $image_name;
+    $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+    
+    // ✅ Check if file is an actual image
+    $check = getimagesize($_FILES["image"]["tmp_name"]);
+    if ($check === false) {
+        die("File is not an image.");
     }
     
-    $image_name = null;
-    print_r($image_name);
-    print_r($_POST);
+    // ✅ Allow only certain file formats
+    $allowed_extensions = ["jpg", "jpeg", "png", "gif"];
+    if (!in_array($imageFileType, $allowed_extensions)) {
+        die("Only JPG, JPEG, PNG & GIF files are allowed.");
+    }
 
-    $query = mysqli_query($conn,"INSERT INTO products (`name`,price,`image`,`description`,stock_quantity,category_id,brand,`size`,colors,discount)
-        VALUE ('$name','$price','$image_name',$description,'$stock_quantity','$category_id','$brand','$size','$colors','$discount')");
+    // ✅ Move uploaded file to `uploads/` directory
+    if (move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
+        echo "Image uploaded successfully: " . $image_name;
+    } else {
+        echo "<script>alert('Sorry, there was an error uploading your file.');</script>";
+    }
+
+		$query = mysqli_query($conn, "INSERT INTO products (`name`, price, `image`, `description`, stock_quantity, category_id, brand, `size`, colors, discount)
+							VALUES ('$name', $price, '$image_name', '$description', $stock_quantity, $category_id, '$brand', '$size', '$colors', $discount)");
+
 
 		if($query){
-			echo "<script>alert('You have successfully inserted the data');</script>";
-			echo "<script type='text/javascript'> document.location ='products-listing.php'; </script>";
+			header("Location: /ecommerce/ecommerce/pages/products/products-listing.php");
 		} else {
             $error = mysqli_error($conn); // Get error message from MySQL
             echo $error;

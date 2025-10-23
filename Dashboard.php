@@ -1,23 +1,42 @@
-
 <?php
-    include('connection.php');
-    if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
-        header('Location: login-form.php');
-        exit();
-    }
-?>
+// include $_SERVER['DOCUMENT_ROOT'] . '/ecommerce/ecommerce/connection.php';
+// include 'connection.php'; 
 
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Dashboard</title>
-    </head>
-    <body>
-    <h1>Welcome, <?php echo htmlspecialchars($_SESSION['username']); ?>!</h1>
-    <form method="post" action="logout.php">
-        <input type="submit" name="logout" value="logout">
-    </form>
-</body>
-</html>
+$username = $_SESSION['username'] ?? 'Guest';
+
+?>
+<?php include 'includes/header.php'; ?>
+<div class="d-flex">
+    <!-- Sidebar Wrapper -->
+    <nav class="sidebar-wrapper">
+        <?php include 'includes/sidebar.php'; ?>
+    </nav>
+    <div class="container-fluid p-4">
+        <h2>Welcome <?php echo htmlspecialchars($username); ?></h2>
+        <p>This is the main dashboard of the website.</p>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card text-bg-primary mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Users</h5>
+                        <p class="card-text">Manage users of the website.</p>
+                        <a href="/ecommerce/ecommerce/pages/users/users-listing.php" class="btn btn-light">Go to
+                            Users</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card text-bg-success mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Products</h5>
+                        <p class="card-text">Manage available products.</p>
+                        <a href="/ecommerce/ecommerce/pages/products/products-listing.php" class="btn btn-light">Go to
+                            Products</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<?php include 'includes/footer.php'; ?>

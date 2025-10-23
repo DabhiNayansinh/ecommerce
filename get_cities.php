@@ -1,10 +1,10 @@
 <?php
-include('connection.php');
+ 	include $_SERVER['DOCUMENT_ROOT'] . '/ecommerce/ecommerce/connection.php';
 
-if(!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true){
-    header('location: login-form.php');
-    exit;
-}
+// if(!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true){
+//     header('location: login-form.php');
+//     exit;
+// }
 
 if (isset($_POST['state_id']) && isset($_POST['country_id'])) {
     $stateId = $_POST['state_id'];
